@@ -1,12 +1,13 @@
 class TaskModel{
  late String? title;
  late String? description;
- late DateTime? date;
+ late dynamic date;
  late bool? status;
  late String? level;
  late String? startTime;
  late String? endTime;
  late String? uId;
+ late int? color;
 
 
   TaskModel({
@@ -18,6 +19,7 @@ class TaskModel{
      this.status,
      this.title,
      this.uId,
+    this.color
 });
 
   TaskModel.fromJson(Map<String , dynamic> json)
@@ -30,6 +32,8 @@ class TaskModel{
     level = json['level'];
     status = json['status'];
     uId = json['uId'];
+    color = json['color'];
+
   }
 
   Map<String , dynamic> toMap()
@@ -43,6 +47,7 @@ class TaskModel{
       'description': description,
       'level': level,
       'status': status,
+      'color': color,
     };
   }
 }

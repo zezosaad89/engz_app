@@ -1,5 +1,7 @@
 import 'package:engz_app/blocs/home/home_cubit.dart';
 import 'package:engz_app/blocs/tasks/task_cubit.dart';
+import 'package:engz_app/screens/task_screen/task_screen.dart';
+import 'package:engz_app/shared/components/navigation.dart';
 import 'package:engz_app/shared/widgets/back_button.dart';
 import 'package:engz_app/shared/widgets/color_picker.dart';
 import 'package:engz_app/shared/widgets/my_text_form_filed.dart';
@@ -65,10 +67,12 @@ class _CreateNewTaskPageState extends State<CreateNewTaskPage> {
         // TODO: implement listener
         if(state is AddTasksSuccessState){
           _btnController.success();
+          //navigateTo(context, TaskScreen());
         }
       },
       builder: (context, state) {
         var cubt = HomeCubit.get(context);
+        var taskCubit = TaskCubit.get(context);
         return Scaffold(
           body: SingleChildScrollView(
             child: Column(
@@ -386,12 +390,16 @@ class _CreateNewTaskPageState extends State<CreateNewTaskPage> {
                     cubt.createTask(
                       title: _titleController.text,
                       description: _desController.text,
-                      date: date,
+                      date: DateFormat.yMMMd().format(date).toString(),
                       status: false,
                       level: 'low',
                       startTime: _startTimeController.text,
                       endTime: _endTimeController.text,
-                    );
+                      color: color,
+                    ).then((value){
+                      Navigator.pop(context);
+                      taskCubit.getTasks();
+                    });
                   }
 
                 )

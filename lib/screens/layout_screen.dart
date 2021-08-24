@@ -38,9 +38,7 @@ class EngzeLayOut extends StatelessWidget {
               color: LightColors.kDarkBlue,
             ),
             leading: InkWell(
-              onTap: () {
-                zoomDrawerController.toggle!();
-              },
+              onTap: () => zoomDrawerController.toggle!(),
               child: Icon(Icons.menu),
             ),
             elevation: 0.0,

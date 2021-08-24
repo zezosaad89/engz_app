@@ -99,6 +99,36 @@ class MenuScreen extends StatelessWidget {
                 ),
               ),
             ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Divider(),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: InkWell(
+                onTap: () {},
+                child: Row(
+                  children: [
+                    Icon(
+                      IconBroken.Logout,
+                      size: 35,
+                      color: LightColors.kDarkBlue,
+                    ),
+                    SizedBox(
+                      width: 10.0,
+                    ),
+                    Text(
+                      "Logout",
+                      style: TextStyle(
+                        color: LightColors.kDarkBlue,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 20.0,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ],
         ),
       ),

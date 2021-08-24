@@ -30,6 +30,7 @@ class AuthCubit extends Cubit<AuthState> {
         .then((value) {
       print(value.user!.uid);
       emit(SuccessUserLoginState(value.user!.uid));
+
     }).catchError((error) {
       emit(ErrorUserLoginState());
       print('Login Error is $error');

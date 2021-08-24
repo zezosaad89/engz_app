@@ -55,16 +55,17 @@ class HomeCubit extends Cubit<HomeState> {
 
   }
 
-  void createTask({
+  Future<void> createTask({
     required String title,
      String? uId,
     required String description,
-    required DateTime date,
+    required String date,
     required bool status,
     required String level,
     required String startTime,
     required String endTime,
-  }) {
+    required int color,
+  }) async {
     emit(AddTasksLoadingState());
 
     TaskModel taskModel = TaskModel(
@@ -75,7 +76,8 @@ class HomeCubit extends Cubit<HomeState> {
       level: level,
       startTime: startTime,
       status: status,
-      uId: userModel.uId
+      uId: userModel.uId,
+      color: color,
     );
 
     FirebaseFirestore.instance
