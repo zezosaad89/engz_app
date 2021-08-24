@@ -1,5 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:engz_app/blocs/home/home_cubit.dart';
+import 'package:engz_app/blocs/tasks/task_cubit.dart';
+import 'package:engz_app/screens/auth/login_screen.dart';
+import 'package:engz_app/blocs/auth/auth_cubit.dart';
 import 'package:engz_app/screens/layout_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +24,9 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
 
       providers: [
-        BlocProvider(create: (BuildContext context)=> HomeCubit())
+        BlocProvider(create: (BuildContext context)=> HomeCubit()),
+        BlocProvider(create: (BuildContext context)=> TaskCubit()),
+        BlocProvider(create: (BuildContext context)=> AuthCubit()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -29,7 +34,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: EngzeLayOut()
+        home: LoginScreen(),
       ),
     );
   }
