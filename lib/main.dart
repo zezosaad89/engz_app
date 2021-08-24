@@ -4,6 +4,8 @@ import 'package:engz_app/blocs/tasks/task_cubit.dart';
 import 'package:engz_app/screens/auth/login_screen.dart';
 import 'package:engz_app/blocs/auth/auth_cubit.dart';
 import 'package:engz_app/screens/layout_screen.dart';
+import 'package:engz_app/shared/components/constance.dart';
+import 'package:engz_app/shared/network/local/cashe_helper.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,8 +14,10 @@ import 'my_observer.dart';
 
 void main() async {
   Bloc.observer = MyBlocObserver();
+
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await CacheHelper.init();
   runApp(MyApp());
 }
 
@@ -24,7 +28,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
 
       providers: [
-        BlocProvider(create: (BuildContext context)=> HomeCubit()),
+        BlocProvider(create: (BuildContext context)=> HomeCubit()..getUserData()),
         BlocProvider(create: (BuildContext context)=> TaskCubit()),
         BlocProvider(create: (BuildContext context)=> AuthCubit()),
       ],
@@ -34,7 +38,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: LoginScreen(),
+        home: USER_UID != null ? EngzeLayOut() : LoginScreen(),
       ),
     );
   }

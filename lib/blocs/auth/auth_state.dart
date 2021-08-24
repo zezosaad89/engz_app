@@ -4,7 +4,11 @@ part of 'auth_cubit.dart';
 abstract class AuthState {}
 
 class AuthInitial extends AuthState {}
-class SuccessUserLoginState extends AuthState {}
+class SuccessUserLoginState extends AuthState {
+  final String uId;
+
+  SuccessUserLoginState(this.uId);
+}
 class ErrorUserLoginState extends AuthState {}
 
 
@@ -15,3 +19,9 @@ class PickImageSuccessState extends AuthState {}
 class PickImageErrorState extends AuthState {}
 
 
+class SuccessCreateUserState extends AuthState {
+  final String uId;
+
+  SuccessCreateUserState(this.uId);
+}
+class ErrorCreateUserState extends AuthState {}

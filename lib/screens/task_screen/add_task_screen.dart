@@ -1,3 +1,4 @@
+import 'package:engz_app/blocs/home/home_cubit.dart';
 import 'package:engz_app/blocs/tasks/task_cubit.dart';
 import 'package:engz_app/shared/widgets/back_button.dart';
 import 'package:engz_app/shared/widgets/color_picker.dart';
@@ -7,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:engz_app/shared/theme/colors/light_color.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:rounded_loading_button/rounded_loading_button.dart';
 
 class CreateNewTaskPage extends StatefulWidget {
   @override
@@ -23,7 +25,7 @@ class _CreateNewTaskPageState extends State<CreateNewTaskPage> {
   final TextEditingController _startTimeController = TextEditingController();
 
   final TextEditingController _endTimeController = TextEditingController();
-
+  final RoundedLoadingButtonController _btnController = RoundedLoadingButtonController();
   late DateTime date;
 
   late TimeOfDay startTime;
@@ -58,12 +60,15 @@ class _CreateNewTaskPageState extends State<CreateNewTaskPage> {
       Icons.keyboard_arrow_down,
       color: Colors.black54,
     );
-    return BlocConsumer<TaskCubit, TaskState>(
+    return BlocConsumer<HomeCubit, HomeState>(
       listener: (context, state) {
         // TODO: implement listener
+        if(state is AddTasksSuccessState){
+          _btnController.success();
+        }
       },
       builder: (context, state) {
-        var cubt = TaskCubit.get(context);
+        var cubt = HomeCubit.get(context);
         return Scaffold(
           body: SingleChildScrollView(
             child: Column(
@@ -291,69 +296,105 @@ class _CreateNewTaskPageState extends State<CreateNewTaskPage> {
                     ],
                   ),
                 ),
-                GestureDetector(
-                  onTap: () {
-                    // AwesomeDialog(
-                    //   dismissOnBackKeyPress: true,
-                    //   context: context,
-                    //   dialogType: DialogType.SUCCES,
-                    //   animType: AnimType.BOTTOMSLIDE,
-                    //   title: 'Add Task',
-                    //   desc: 'Task ${_titleController.text} Added',
-                    //   btnCancelOnPress: () {
-                    //     // Navigator.of(context).pop();
-                    //   },
-                    //   btnOkOnPress: () {
-                    //     addTask(
-                    //             _titleController.text,
-                    //             _desController.text,
-                    //             false,
-                    //             _startTimeController.text,
-                    //             _endTimeController.text,
-                    //             date,
-                    //             categoty)
-                    //         .then((value) {
-                    //       navigateEnd(context, TaskScreen());
-                    //     }).catchError((error) {
-                    //       print(error.toString());
-                    //     });
-                    //   },
-                    // )..show();
-                    cubt.addTasks(
+                // GestureDetector(
+                //   onTap: () {
+                //     // AwesomeDialog(
+                //     //   dismissOnBackKeyPress: true,
+                //     //   context: context,
+                //     //   dialogType: DialogType.SUCCES,
+                //     //   animType: AnimType.BOTTOMSLIDE,
+                //     //   title: 'Add Task',
+                //     //   desc: 'Task ${_titleController.text} Added',
+                //     //   btnCancelOnPress: () {
+                //     //     // Navigator.of(context).pop();
+                //     //   },
+                //     //   btnOkOnPress: () {
+                //     //     addTask(
+                //     //             _titleController.text,
+                //     //             _desController.text,
+                //     //             false,
+                //     //             _startTimeController.text,
+                //     //             _endTimeController.text,
+                //     //             date,
+                //     //             categoty)
+                //     //         .then((value) {
+                //     //       navigateEnd(context, TaskScreen());
+                //     //     }).catchError((error) {
+                //     //       print(error.toString());
+                //     //     });
+                //     //   },
+                //     // )..show();
+                //     // cubt.addTasks(
+                //     //   title: _titleController.text,
+                //     //   desc: _desController.text,
+                //     //   status: false,
+                //     //   date: date,
+                //     //   startTime: _startTimeController.text,
+                //     //   endTime: _endTimeController.text,
+                //     // );
+                //     cubt.createTask(
+                //       title: _titleController.text,
+                //         description: _desController.text,
+                //         date: date,
+                //         status: false,
+                //         level: 'low',
+                //         startTime: _startTimeController.text,
+                //         endTime: _endTimeController.text,
+                //     );
+                //
+                //
+                //
+                //     print(_titleController.text);
+                //
+                //   },
+                //   child: Container(
+                //     height: 80,
+                //     width: width,
+                //     child: Row(
+                //       crossAxisAlignment: CrossAxisAlignment.stretch,
+                //       children: <Widget>[
+                //         Container(
+                //           child: Text(
+                //             'Create Task',
+                //             style: TextStyle(
+                //                 color: Colors.white,
+                //                 fontWeight: FontWeight.w700,
+                //                 fontSize: 18),
+                //           ),
+                //           alignment: Alignment.center,
+                //           margin: EdgeInsets.fromLTRB(20, 10, 20, 20),
+                //           width: width - 40,
+                //           decoration: BoxDecoration(
+                //             color: LightColors.kBlue,
+                //             borderRadius: BorderRadius.circular(20),
+                //           ),
+                //         ),
+                //       ],
+                //     ),
+                //   ),
+                // ),
+                RoundedLoadingButton(
+                  controller: _btnController,
+                  child: Text(
+                    'Create Task',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 18),
+                  ),
+                  onPressed: () {
+                    cubt.createTask(
                       title: _titleController.text,
-                      desc: _desController.text,
-                      status: false,
+                      description: _desController.text,
                       date: date,
+                      status: false,
+                      level: 'low',
                       startTime: _startTimeController.text,
                       endTime: _endTimeController.text,
                     );
-                  },
-                  child: Container(
-                    height: 80,
-                    width: width,
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: <Widget>[
-                        Container(
-                          child: Text(
-                            'Create Task',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w700,
-                                fontSize: 18),
-                          ),
-                          alignment: Alignment.center,
-                          margin: EdgeInsets.fromLTRB(20, 10, 20, 20),
-                          width: width - 40,
-                          decoration: BoxDecoration(
-                            color: LightColors.kBlue,
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+                  }
+
+                )
               ],
             ),
           ),

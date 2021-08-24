@@ -16,3 +16,8 @@ class GetTasksErrorState extends HomeState {}
 class AddTasksLoadingState extends HomeState {}
 class AddTasksSuccessState extends HomeState {}
 class AddTasksErrorState extends HomeState {}
+
+
+class GetUserDataLoadingState extends HomeState {}
+class GetUserDataSuccessState extends HomeState {}
+class GetUserDataErrorState extends HomeState {}

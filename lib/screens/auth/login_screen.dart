@@ -1,5 +1,6 @@
 import 'package:engz_app/screens/auth/register_screen.dart';
 import 'package:engz_app/shared/components/navigation.dart';
+import 'package:engz_app/shared/network/local/cashe_helper.dart';
 import 'package:engz_app/shared/theme/colors/light_color.dart';
 import 'package:engz_app/shared/theme/icons/broken_icons.dart';
 import 'package:engz_app/shared/widgets/my_text_form_filed.dart';
@@ -7,6 +8,8 @@ import 'package:engz_app/blocs/auth/auth_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../layout_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   TextEditingController _emailController = TextEditingController();
@@ -18,6 +21,14 @@ class LoginScreen extends StatelessWidget {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
         // TODO: implement listener
+        if(state is SuccessUserLoginState){
+          CacheHelper.putData(
+              key: 'uId', value: state.uId).then((value){
+            navigateEnd(context, EngzeLayOut());
+          }).catchError((error){
+            print(error.toString());
+          });
+        }
       },
       builder: (context, state) {
         var cubit = AuthCubit.get(context);

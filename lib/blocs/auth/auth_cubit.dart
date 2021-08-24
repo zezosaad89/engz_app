@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:engz_app/models/user_model.dart';
 import 'package:engz_app/screens/layout_screen.dart';
 import 'package:engz_app/shared/components/navigation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -28,8 +29,7 @@ class AuthCubit extends Cubit<AuthState> {
         .signInWithEmailAndPassword(email: email, password: password)
         .then((value) {
       print(value.user!.uid);
-      emit(SuccessUserLoginState());
-      navigateEnd(context, EngzeLayOut());
+      emit(SuccessUserLoginState(value.user!.uid));
     }).catchError((error) {
       emit(ErrorUserLoginState());
       print('Login Error is $error');
@@ -46,7 +46,6 @@ class AuthCubit extends Cubit<AuthState> {
     await auth.createUserWithEmailAndPassword(email: email, password: password).then((value){
       emit(SuccessRegisterState());
       userCreate(email: email, name: name, uId: value.user!.uid);
-      navigateEnd(context, EngzeLayOut());
     }).catchError((error){
       emit(ErrorRegisterState());
       print(error.toString());
@@ -58,10 +57,18 @@ class AuthCubit extends Cubit<AuthState> {
     required String name,
     required String uId,
   }) {
-    FirebaseFirestore.instance.collection('users').doc(uId).collection('userInfo').doc(uId).set({
-      'email' : email,
-      'name' : name,
-
+    UserModel userModel = UserModel(
+      email: email,
+      name: name,
+      uId: uId
+    );
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(uId)
+        .set(userModel.toJson()).then((value){
+        emit(SuccessCreateUserState(uId));
+    }).catchError((error){
+      emit(ErrorCreateUserState());
     });
   }
 
