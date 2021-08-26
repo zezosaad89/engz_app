@@ -8,12 +8,14 @@ import 'package:engz_app/blocs/auth/auth_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rounded_loading_button/rounded_loading_button.dart';
 
 import '../layout_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
+  final RoundedLoadingButtonController _btnController = RoundedLoadingButtonController();
 
   var formKey = GlobalKey<FormState>();
   @override
@@ -24,6 +26,7 @@ class LoginScreen extends StatelessWidget {
         if(state is SuccessUserLoginState){
           CacheHelper.putData(
               key: 'uId', value: state.uId).then((value){
+                _btnController.success();
             navigateEnd(context, EngzeLayOut());
           }).catchError((error){
             print(error.toString());
@@ -121,38 +124,66 @@ class LoginScreen extends StatelessWidget {
                             ),
                           ),
                         )),
-                    GestureDetector(
-                      onTap: () {
-                        if (formKey.currentState!.validate()) {
-                          cubit.userLogin(
-                            email: _emailController.text,
-                            password: _passwordController.text,
-                            context: context,
-                          );
-                        }
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: Container(
-                          height: 50,
-                          decoration: BoxDecoration(
-                            color: LightColors.kDarkBlue,
-                            borderRadius: BorderRadius.circular(20.0),
-                          ),
-                          child: Center(
-                            child: Text(
-                              'Login...',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                letterSpacing: 1.2,
-                              ),
-                            ),
+                    RoundedLoadingButton(
+                      height: 50,
+                        color: LightColors.kDarkBlue,
+                        borderRadius: 20.0,
+                        controller: _btnController,
+
+                        child: Text(
+                          'Login...',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 1.2,
                           ),
                         ),
-                      ),
-                    )
+                        onPressed: () {
+                          if (formKey.currentState!.validate()) {
+                            cubit.userLogin(
+                              email: _emailController.text,
+                              password: _passwordController.text,
+                              context: context,
+                            );
+                          } else {
+                            _btnController.reset();
+                          }
+                        }
+
+                    ),
+                    // GestureDetector(
+                    //   onTap: () {
+                    //     if (formKey.currentState!.validate()) {
+                    //       cubit.userLogin(
+                    //         email: _emailController.text,
+                    //         password: _passwordController.text,
+                    //         context: context,
+                    //       );
+                    //     }
+                    //   },
+                    //   child: Padding(
+                    //     padding: const EdgeInsets.all(20.0),
+                    //     child: Container(
+                    //       height: 50,
+                    //       decoration: BoxDecoration(
+                    //         color: LightColors.kDarkBlue,
+                    //         borderRadius: BorderRadius.circular(20.0),
+                    //       ),
+                    //       child: Center(
+                    //         child: Text(
+                    //           'Login...',
+                    //           style: TextStyle(
+                    //             color: Colors.white,
+                    //             fontSize: 20,
+                    //             fontWeight: FontWeight.bold,
+                    //             letterSpacing: 1.2,
+                    //           ),
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ),
+                    // )
                     // Padding(
                     //   padding: const EdgeInsets.all(15.0),
                     //   child: TextFormField(

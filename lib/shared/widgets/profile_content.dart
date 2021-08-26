@@ -1,12 +1,13 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blobs/blobs.dart';
 import 'package:engz_app/shared/theme/colors/light_color.dart';
 import 'package:flutter/material.dart';
 
 Widget profileContentStatus(context) => Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(20.0),
       child: Container(
         width: double.infinity,
-        height: MediaQuery.of(context).size.height * 0.3,
+        height: MediaQuery.of(context).size.height * 0.25,
         decoration: BoxDecoration(
           color: LightColors.kDarkYellow,
           borderRadius: BorderRadius.circular(20.0),
@@ -27,8 +28,8 @@ Widget profileContentStatus(context) => Padding(
               width: 15,
             ),
             Container(
-              width: 150,
-              height: 150,
+              width: 100,
+              height: 100,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(100.0),
                 child: Image.network(
@@ -42,10 +43,10 @@ Widget profileContentStatus(context) => Padding(
             ),
             Column(
               children: [
-                Text(
+                AutoSizeText(
                   'Abdelazez Saad',
                   style: TextStyle(
-                    fontSize: 30.0,
+                    fontSize: 20.0,
                     fontWeight: FontWeight.bold,
                     letterSpacing: 1.0,
                     fontFamily: 'Caveat',

@@ -18,6 +18,13 @@ class CacheHelper{
    return await sharedPreferences!.setString(key, value);
   }
 
+  static Future <bool> remove( {
+    required String key,
+  }) async
+  {
+    return await sharedPreferences!.remove(key);
+  }
+
  static String? getData( {
     required String key,
 
